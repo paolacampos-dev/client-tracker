@@ -5,8 +5,8 @@ import pg from "pg";
 dotenv.config();
 
 //create a pool with pg (waiting room for requests)
-const db = new pg.Pool({
+export const db = new pg.Pool({
     connectionString: process.env.DB_URL, 
-})
+});
 
 
