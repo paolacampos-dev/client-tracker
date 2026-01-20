@@ -5,7 +5,6 @@ import clientFields from "../data/ClientFields.js";
 function ClientForm({ formData, onChange, onSubmit, submitLabel})    {
     return  (
         <>
-            <h3>Client Form:</h3>
             <form onSubmit={onSubmit}>
                 {clientFields.map(field => (
                 <div key={field.name}>

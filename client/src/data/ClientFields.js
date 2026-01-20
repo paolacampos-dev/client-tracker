@@ -1,6 +1,6 @@
 const clientFields = [
   {
-    name: "company_name",
+    name: "companyName",
     label: "Company Name",
     type: "text",
   },
@@ -20,7 +20,7 @@ const clientFields = [
     type: "text"
   },
   {
-    name: "contact_name",
+    name: "contactName",
     label: "Contact Name",
     type: "text"
   },
@@ -37,12 +37,12 @@ const clientFields = [
   {
     name: "mobile",
     label: "Mobile",
-    type: "tel"
+    type: "number"
   },
   {
     name: "email",
     label: "Email",
-    type: "email"
+    type: "text"
   },
   {
     name: "date",

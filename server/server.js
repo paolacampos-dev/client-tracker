@@ -29,7 +29,7 @@ app.get("/clients",  async (req, res) =>  {
     try{
     //query the db
     const query = await db.query (
-        `SELECT id, company_name, url, pages, sector, contact_name,  role, address, mobile, email FROM clients `
+        `SELECT id, company_name, url, pages, sector, contact_name,  role, address, mobile, email, date FROM clients `
     );
     console.log(query.rows)
     res.json(query.rows)
@@ -52,25 +52,31 @@ app.get("/clients/:id", async (req, res) =>   {
 
 // Create (POST)
 app.post("/new-client", (req, res) =>   {
-    try{
+    try {
         //const data = req.body;
-        const { companyName, url, pages, sector, contactName,  role, address, mobile, email } = req.body;
+        const { companyName, url, pages, sector, contactName,  role, address, mobile, email, date } = req.body;
+
+        const safePages = pages === "" ? null : pages;
+        const safeMobile = mobile === "" ? null : mobile;
+        const safeDate = date === "" ? null : date;
+
         const query = db.query(
-            `INSERT INTO clients (company_name, url, pages, sector, contact_name,  role, address, mobile, email) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *`,
+            `INSERT INTO clients (company_name, url, pages, sector, contact_name,  role, address, mobile, email, date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
             [
                 /*data.companyName,*/ companyName,
                 url,
-                pages, 
+                safePages, 
                 sector, 
                 contactName, 
                 role, 
                 address, 
-                mobile, 
+                safeMobile, 
                 email,
+                safeDate
             ]
         );
         res.status(201).json({ request: "success" });
-    } catch {
+    } catch (error) {
         console.error(error, "Request failed.");
         res.status(500).json({ request: "fail" });
     }

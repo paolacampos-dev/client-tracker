@@ -10,7 +10,7 @@ function ClientDetails()    {
 
     useEffect(() => {
         async function fecthClient()    {
-            const response = await fetch(`https://client-tracker-1-juzl.onrender.com/${id}`);
+            const response = await fetch(`http://localhost:8080/clients/${id}`);
 
             const data = await response.json();
             setClient(data);

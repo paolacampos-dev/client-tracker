@@ -1,5 +1,4 @@
 import {Routes, Route } from "react-router";
-
 import Header from "./components/Header.jsx";
 import ClientList from "./pages/ClientList.jsx";
 import NewClient from "./pages/NewClient.jsx";

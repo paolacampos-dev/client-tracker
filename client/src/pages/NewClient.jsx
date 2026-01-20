@@ -3,11 +3,11 @@ import ClientForm from "../components/ClientForm.jsx";
 
 function NewClient() {
     const [formData, setFormData] = useState({
-        company_name: "",
+        companyName: "",
         url: "",
         pages: "",
         sector: "",
-        contact_name: "",
+        contactName: "",
         role: "", 
         address: "", 
         mobile: "", 
@@ -26,24 +26,42 @@ function NewClient() {
     async function handleSubmit(event)  {
         event.preventDefault();
 
-        await fetch("https://client-tracker-1-juzl.onrender.com/new-client", {
+        const response = await fetch("http://localhost:8080/new-client", {
             method: "POST", 
             headers: {
                 "Content-Type": "application/json"
             }, 
             body: JSON.stringify(formData)
         });
+        const result = await response.json()
+        console.log("Server response", result)
+
+        setFormData({
+            companyName: "",
+            url: "",
+            pages: "",
+            sector: "",
+            contactName: "",
+            role: "",
+            address: "",
+            mobile: "",
+            email: "",
+            date: "",
+        });
     }
 
+    
     return  (
         <>
             <h2>New client</h2>
-            <ClientForm
-                formData={formData}
-                onChange={handleChange}
-                onSubmit={handleSubmit}
-                submitLabel="Create a new client"
-            />
+            <div className="newClient">
+                <ClientForm 
+                    formData={formData}
+                    onChange={handleChange}
+                    onSubmit={handleSubmit}
+                    submitLabel="Create a new client"
+                />
+            </div>
         </>
         
     )

@@ -1,25 +1,46 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 
 
 function ClientList()   {
     const [clients, setClients] = useState([])
+    const [searchParams] = useSearchParams();
+    const sort = searchParams.get("sort")
 
     useEffect(() => {
         async function fetchClients()   {
-            const response = await fetch("https://client-tracker-1-juzl.onrender.com/clients");
+            const response = await fetch("http://localhost:8080/clients");
             const data = await response.json();
+        
             setClients(data)      
             }
             fetchClients();
+            console.log(clients)
         },  []);
+
+        let sortedClients= [...clients]
+
+        if(sort==="desc")  {
+            sortedClients.sort((a, b) =>  
+                b.company_name.localeCompare(a.company_name)
+            );
+        } else if (sort==="asc")   {
+                    sortedClients.sort((a, b) =>  
+                    a.company_name.localeCompare(b.company_name)
+                );
+            }
 
         return (
             <>
-            <h2>CLIENTS</h2>
-            <ul>
-                {clients.map(client => (
+            <nav className="client-sort">
+                <Link to="/clients/?sort=asc">Asc</Link>
+                <Link to="/clients/?sort=desc">Desc</Link>
+            </nav>
+
+            <ul className="clients">
+                {sortedClients.map(client => (
                     <li key={client.id}>
+                        {/* {JSON.stringify(client)} */}
                         <Link to={`/clients/${client.id}`}>
                         {client.company_name}
                         </Link>
