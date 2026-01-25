@@ -10,7 +10,7 @@ function ClientList()   {
 
     useEffect(() => {
         async function fetchClients()   {
-            const response = await fetch("http://localhost:8080/clients");
+            const response = await fetch("https://client-tracker-1-juzl.onrender.com/clients");
             const data = await response.json();
         
             setClients(data)      
