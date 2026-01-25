@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router";
 
 
 function ClientList()   {
+    
     const [clients, setClients] = useState([])
     const [searchParams] = useSearchParams();
     const sort = searchParams.get("sort")
