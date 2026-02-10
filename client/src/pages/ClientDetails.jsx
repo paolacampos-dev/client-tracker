@@ -2,7 +2,8 @@ import { useState, useEffect } from "react";
 import { useParams} from "react-router";
 
 //import PerformButton from "../components/button";
-// import HandleDelete from "../components/DeleteClient";
+//import HandleDelete from "../components/DeleteClient";
+//how we import render url from .env file${import.meta.env.VITE_API_URL}
 
 function ClientDetails()    {
     const { id } = useParams()
@@ -10,7 +11,7 @@ function ClientDetails()    {
 
     useEffect(() => {
         async function fecthClient()    {
-            const response = await fetch(`http://localhost:8080/clients/${id}`);
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/clients/${id}`);
 
             const data = await response.json();
             setClient(data);

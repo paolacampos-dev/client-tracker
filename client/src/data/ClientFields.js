@@ -1,6 +1,6 @@
 const clientFields = [
   {
-    name: "companyName",
+    name: "company_name",
     label: "Company Name",
     type: "text",
   },
@@ -20,7 +20,7 @@ const clientFields = [
     type: "text"
   },
   {
-    name: "contactName",
+    name: "contact_name",
     label: "Contact Name",
     type: "text"
   },

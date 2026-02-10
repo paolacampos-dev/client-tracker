@@ -27,16 +27,21 @@ app.get("/", (req, res) => {
 //route --> htpp READ (GET) (just worry about the resp)
 app.get("/clients",  async (req, res) =>  {
     try{
-    //query the db
+    //query the db 
     const query = await db.query (
-        `SELECT id, company_name, url, pages, sector, contact_name,  role, address, mobile, email, date FROM clients `
-    );
-    console.log(query.rows)
+        // "id" is not need it
+        // SELECT * FROM clientes
+        `SELECT company_name, url, pages, sector, contact_name, role, address, mobile, email, date FROM clients `
+        );
+    console.log(query)
+    //parse the response into JSON 
+    //but we just need .rows not all the object then we need to wrangle the data query.rows  
     res.json(query.rows)
-} catch (error) {
-    console.log(error, "Response failed")
-    res.status(500).json({renpose: "fail"});
-}
+    //console.log(query.rows)    
+    } catch (error) {
+    console.log("DB error", error)
+    res.status(500).json({ response: "fail", error: error.message });
+    }
 });
 
 //get one client details in particular
@@ -51,28 +56,34 @@ app.get("/clients/:id", async (req, res) =>   {
 
 
 // Create (POST)
-app.post("/new-client", (req, res) =>   {
+app.post("/new-client", async (req, res) =>   {
     try {
+        //receive the data from the client
+        //const newClient = req.body.formValues
+        const newClient = req.body
+        const pages = newClient.pages === "" ? null : Number(newClient.pages);
+        const mobile = newClient.mobile === "" ? null : Number(newClient.mobile);
+        const date = newClient.date === "" ? null : Number(newClient.date);
+
+        console.log(newClient)
         //const data = req.body;
-        const { companyName, url, pages, sector, contactName,  role, address, mobile, email, date } = req.body;
+        //const { companyName, url, pages, sector, contactName,  role, address, mobile, email, date } = req.body;
 
-        const safePages = pages === "" ? null : pages;
-        const safeMobile = mobile === "" ? null : mobile;
-        const safeDate = date === "" ? null : date;
-
-        const query = db.query(
+        const query = await db.query(
+            //because we have the parameters we will have to filled with the arguments for those parameters in the array in the second arg
+            //same properties as the ones we collect from the form in the client as name=""
             `INSERT INTO clients (company_name, url, pages, sector, contact_name,  role, address, mobile, email, date) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *`,
             [
-                /*data.companyName,*/ companyName,
-                url,
-                safePages, 
-                sector, 
-                contactName, 
-                role, 
-                address, 
-                safeMobile, 
-                email,
-                safeDate
+                newClient.company_name,
+                newClient.url,
+                pages, 
+                newClient.sector, 
+                newClient.contact_name, 
+                newClient.role, 
+                newClient.address, 
+                mobile, 
+                newClient.email,
+                date
             ]
         );
         res.status(201).json({ request: "success" });
