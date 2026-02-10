@@ -10,23 +10,28 @@ function ClientList()   {
 
     useEffect(() => {
         async function fetchClients()   {
-            const response = await fetch("https://client-tracker-uo4w.onrender.com/clients");
+            // console.log("API URL =", import.meta.env.VITE_API_URL);
+            // import.meta is a native  JS module feature
+            const response = await fetch(
+                // `http://localhost:8080/clients`)
+                `${import.meta.env.VITE_API_URL}/clients`);
+            // console.log("Status:", response.status)
             const data = await response.json();
-        
-            setClients(data)      
-            }
+            // console.log("DATA", data)
+            setClients(data);      
+            } /*catch (error) {
+                console.log("FETCH ERROR:", error)
+            }*/
             fetchClients();
             console.log(clients)
-        },  []);
-
-        let sortedClients= [...clients]
+        }, []);
 
         if(sort==="desc")  {
-            sortedClients.sort((a, b) =>  
+            clients.sort((a, b) =>  
                 b.company_name.localeCompare(a.company_name)
             );
         } else if (sort==="asc")   {
-                    sortedClients.sort((a, b) =>  
+                    clients.sort((a, b) =>  
                     a.company_name.localeCompare(b.company_name)
                 );
             }
@@ -39,9 +44,8 @@ function ClientList()   {
             </nav>
 
             <ul className="clients">
-                {sortedClients.map(client => (
+                {clients.map((client, index) => (
                     <li key={client.id}>
-                        {/* {JSON.stringify(client)} */}
                         <Link to={`/clients/${client.id}`}>
                         {client.company_name}
                         </Link>
