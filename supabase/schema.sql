@@ -59,3 +59,19 @@ CREATE TABLE IF NOT EXISTS websites (
   name VARCHAR(50),
   url TEXT
 );
+
+
+---
+CREATE EXTENSION IF NOT EXISTS "pgcrypto";
+CREATE TABLE IF NOT EXISTS clients (
+id  UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+user_id TEXT NOT NULL, 
+company_name TEXT, 
+contact_name TEXT,
+contact_role TEXT,
+phone_number TEXT,
+email TEXT,
+url TEXT,
+description TEXT,  
+address TEXT
+);
